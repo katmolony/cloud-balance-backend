@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+sqlalchemy
+psycopg2-binary
+alembic
+boto3  # (For AWS interactions later)
+pytest
+httpx
