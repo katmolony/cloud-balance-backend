@@ -1,1 +1,13 @@
-.test
+# Ignore environment variables
+.env
+config/*.yml
+
+# Ignore dependencies
+node_modules/
+venv/
+__pycache__/
+
+# Ignore build files
+dist/
+build/
+*.log
