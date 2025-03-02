@@ -60,7 +60,7 @@ API will be available at: http://127.0.0.1:8000
 | Method | Endpoint           | Description               |
 |--------|--------------------|---------------------------|
 | GET    | `/`                | Health check             |
-| POST   | `/resource-usage/` | Track AWS resource usage |
+| POST   | `/resource-usage/` | Trasck AWS resource usage |
 
 ## 🚀 Deployment (AWS Lambda)
 * Planned: Deploy using AWS Lambda + API Gateway.
