@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "mocha tests/**/*.test.js --timeout 5000"
+    "setup-test-db": "psql -U kate -d postgres -f scripts/setup-test-db.sql 2>&1 | tee logs/setup-test-db.log",
+    "test": "npm run setup-test-db && mocha tests/**/*.test.js --timeout 5000"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +17,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "helmet": "^8.0.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pg": "^8.13.3"
   },
   "devDependencies": {
     "chai": "^4.3.8",
