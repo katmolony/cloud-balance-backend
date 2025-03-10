@@ -57,4 +57,29 @@ describe("User API Routes", () => {
         expect(res.body.users[0]).to.have.property("name").equal("Jane Doe");
     });
 
+    it("should fetch a user by ID", async () => {
+        // First, create a user
+        const createRes = await chai.request(app).post("/api/users").send({
+            name: "Jane Smith",
+            email: "jane.smith@example.com"
+        });
+    
+        const userId = createRes.body.user.id;
+    
+        // Fetch the user by ID
+        const res = await chai.request(app).get(`/api/users/${userId}`);
+    
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property("message").equal("User fetched successfully!");
+        expect(res.body.user).to.have.property("name").equal("Jane Smith");
+    });
+    
+    it("should return 404 if user does not exist", async () => {
+        const res = await chai.request(app).get(`/api/users/999`);
+    
+        expect(res).to.have.status(404);
+        expect(res.body).to.have.property("error").equal("User not found");
+    });
+    
+
 });
