@@ -1,6 +1,6 @@
 name: Run Tests
 
-on: [push, pull_request]  # Runs on every push and PR
+on: [push, pull_request]
 
 jobs:
   test:
@@ -32,6 +32,14 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
+
+      - name: Set Environment Variables
+        run: |
+          echo "TEST_DB_USER=testuser" >> $GITHUB_ENV
+          echo "TEST_DB_PASSWORD=testpassword" >> $GITHUB_ENV
+          echo "TEST_DB_HOST=localhost" >> $GITHUB_ENV
+          echo "TEST_DB_PORT=5432" >> $GITHUB_ENV
+          echo "TEST_DB_NAME=cloud_balance_test" >> $GITHUB_ENV
 
       - name: Setup Test Database
         run: npm run setup-test-db

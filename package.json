@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "setup-test-db": "psql -U kate -d postgres -f scripts/setup-test-db.sql 2>&1 | tee logs/setup-test-db.log",
+    "setup-test-db": "psql -h localhost -U testuser -d cloud_balance_test -f scripts/setup-test-db.sql 2>&1 | tee logs/setup-test-db.log",
     "test": "npm run setup-test-db && mocha tests/**/*.test.js --timeout 5000"
   },
   "keywords": [],
