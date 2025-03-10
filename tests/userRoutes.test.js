@@ -111,5 +111,28 @@ describe("User API Routes", () => {
         expect(res.body).to.have.property("error").equal("User not found");
     });
     
-
+    it("should delete an existing user", async () => {
+        // First, create a user
+        const createRes = await chai.request(app).post("/api/users").send({
+            name: "Delete User",
+            email: "delete@example.com"
+        });
+    
+        const userId = createRes.body.user.id;
+    
+        // Now, delete the user
+        const res = await chai.request(app).delete(`/api/users/${userId}`);
+    
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property("message").equal("User deleted successfully!");
+        expect(res.body.user).to.have.property("name").equal("Delete User");
+    });
+    
+    it("should return 404 if trying to delete a non-existent user", async () => {
+        const res = await chai.request(app).delete(`/api/users/999`);
+    
+        expect(res).to.have.status(404);
+        expect(res.body).to.have.property("error").equal("User not found");
+    });
+    
 });
