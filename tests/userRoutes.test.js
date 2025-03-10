@@ -81,5 +81,35 @@ describe("User API Routes", () => {
         expect(res.body).to.have.property("error").equal("User not found");
     });
     
+    it("should update an existing user", async () => {
+        // First, create a user
+        const createRes = await chai.request(app).post("/api/users").send({
+            name: "Old Name",
+            email: "old@example.com"
+        });
+    
+        const userId = createRes.body.user.id;
+    
+        // Now, update the user
+        const res = await chai.request(app).put(`/api/users/${userId}`).send({
+            name: "New Name",
+            email: "new@example.com"
+        });
+    
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property("message").equal("User updated successfully!");
+        expect(res.body.user).to.have.property("name").equal("New Name");
+    });
+    
+    it("should return 404 if trying to update a non-existent user", async () => {
+        const res = await chai.request(app).put(`/api/users/999`).send({
+            name: "Ghost User",
+            email: "ghost@example.com"
+        });
+    
+        expect(res).to.have.status(404);
+        expect(res.body).to.have.property("error").equal("User not found");
+    });
+    
 
 });

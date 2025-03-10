@@ -55,3 +55,32 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ error: "Failed to fetch user" });
     }
 };
+
+exports.updateUserById = async (req, res) => {
+    const { id } = req.params;
+    const { name, email } = req.body;
+
+    if (!name || !email) {
+        return res.status(400).json({ error: "Name and email are required" });
+    }
+
+    try {
+        const result = await pool.query(
+            "UPDATE users SET name = $1, email = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $3 RETURNING *",
+            [name, email, id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.status(200).json({
+            message: "User updated successfully!",
+            user: result.rows[0],
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to update user" });
+    }
+};
