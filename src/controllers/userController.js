@@ -21,3 +21,16 @@ exports.createUser = async (req, res) => {
         res.status(500).json({ error: "Failed to create user" });
     }
 };
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM users");
+        res.status(200).json({
+            message: "Users fetched successfully!",
+            users: result.rows,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to fetch users" });
+    }
+};
