@@ -2,13 +2,17 @@ psql:scripts/setup-test-db.sql:4: NOTICE:  Starting test database setup...
 DO
 psql:scripts/setup-test-db.sql:16: NOTICE:  Test user already exists
 DO
-DROP DATABASE
+psql:scripts/setup-test-db.sql:19: ERROR:  cannot drop the currently open database
 psql:scripts/setup-test-db.sql:24: NOTICE:  Dropped existing test database
 DO
-CREATE DATABASE
+psql:scripts/setup-test-db.sql:27: ERROR:  database "cloud_balance_test" already exists
 psql:scripts/setup-test-db.sql:32: NOTICE:  Created new test database cloud_balance_test
 DO
 GRANT
 psql:scripts/setup-test-db.sql:41: NOTICE:  Granted privileges to testuser
 psql:scripts/setup-test-db.sql:41: NOTICE:  Test database setup complete!
+DO
+DROP TABLE
+CREATE TABLE
+psql:scripts/setup-test-db.sql:58: NOTICE:  Users table created successfully!
 DO

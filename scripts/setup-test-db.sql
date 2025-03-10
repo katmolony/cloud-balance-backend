@@ -39,3 +39,20 @@ BEGIN
     RAISE NOTICE 'Granted privileges to testuser';
     RAISE NOTICE 'Test database setup complete!';
 END $$;
+
+-- Drop the users table if it exists (for fresh test runs)
+DROP TABLE IF EXISTS users;
+
+-- Create the users table
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DO $$
+BEGIN
+    RAISE NOTICE 'Users table created successfully!';
+END $$;
