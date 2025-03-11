@@ -3,9 +3,19 @@ const pool = require("../src/config/database");
 const { expect } = chai;
 
 describe("Database Integration Tests", () => {
-    it("should successfully connect to the database", async () => {
-        const result = await pool.query("SELECT NOW()");
-        expect(result.rows.length).to.be.greaterThan(0);
+    
+    // Build users tables before tests run
+    before(async () => {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                email VARCHAR(100) UNIQUE NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        `);
+        console.log("Users table is ready for integration tests.");
     });
 
     it("should insert a new user into the database", async () => {
@@ -23,13 +33,10 @@ describe("Database Integration Tests", () => {
 
     after(async () => {
         try {
-            // Drop dependent tables first
-            await pool.query("DROP TABLE IF EXISTS resources");
             await pool.query("DROP TABLE IF EXISTS users");
-            console.log("Tables dropped successfully after tests.");
+            console.log("Users table dropped after integration tests.");
         } catch (error) {
-            console.error("Failed to drop tables after tests.", error);
+            console.error("Failed to drop users table after tests.", error);
         }
     });
 });
-
