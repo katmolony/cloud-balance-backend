@@ -1,15 +1,25 @@
 psql:scripts/setup-test-db.sql:5: NOTICE:  Starting test database setup...
 DO
-psql:scripts/setup-test-db.sql:17: NOTICE:  Test user already exists
-DO
-psql:scripts/setup-test-db.sql:28: NOTICE:  Test database already exists
-DO
-GRANT
-psql:scripts/setup-test-db.sql:37: NOTICE:  Granted privileges to testuser
-psql:scripts/setup-test-db.sql:37: NOTICE:  Test database setup complete!
-DO
-You are now connected to database "cloud_balance_test" as user "testuser".
+DROP TABLE
 DROP TABLE
 CREATE TABLE
-psql:scripts/setup-test-db.sql:57: NOTICE:  Users table created successfully!
+psql:scripts/setup-test-db.sql:25: NOTICE:  Users table created successfully!
+DO
+CREATE TABLE
+psql:scripts/setup-test-db.sql:42: NOTICE:  Resources table created successfully!
+DO
+psql:scripts/setup-test-db.sql:55: NOTICE:  Test user already exists
+DO
+psql:scripts/setup-test-db.sql:66: NOTICE:  Test database already exists
+DO
+GRANT
+psql:scripts/setup-test-db.sql:75: NOTICE:  Granted privileges to testuser
+psql:scripts/setup-test-db.sql:75: NOTICE:  Test database setup complete!
+DO
+You are now connected to database "cloud_balance_test" as user "testuser".
+psql:scripts/setup-test-db.sql:81: ERROR:  cannot drop table users because other objects depend on it
+DETAIL:  constraint resources_user_id_fkey on table resources depends on table users
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+psql:scripts/setup-test-db.sql:90: ERROR:  relation "users" already exists
+psql:scripts/setup-test-db.sql:95: NOTICE:  Users table created successfully!
 DO

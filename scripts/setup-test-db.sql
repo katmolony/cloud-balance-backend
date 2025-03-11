@@ -4,6 +4,44 @@ BEGIN
     RAISE NOTICE 'Starting test database setup...';
 END $$;
 
+-- Drop resources table first (due to foreign key dependency)
+DROP TABLE IF EXISTS resources;
+
+-- Then drop users table
+DROP TABLE IF EXISTS users;
+
+-- Create the users table
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DO $$
+BEGIN
+    RAISE NOTICE 'Users table created successfully!';
+END $$;
+
+-- Create the resources table with a foreign key to users
+CREATE TABLE resources (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    resource_type VARCHAR(100) NOT NULL,
+    resource_id VARCHAR(255) NOT NULL,
+    status VARCHAR(50) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+DO $$
+BEGIN
+    RAISE NOTICE 'Resources table created successfully!';
+END $$;
+
+
 -- Create test user if it doesn't exist
 DO $$ 
 BEGIN

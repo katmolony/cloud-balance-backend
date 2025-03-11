@@ -16,6 +16,11 @@ app.use(express.json());
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/users", userRoutes);
 
+const resourceRoutes = require("./routes/resourceRoutes");
+
+// Register Resource Routes
+app.use("/api/resources", resourceRoutes);
+
 // Health Check Route
 app.get("/", (req, res) => {
   res.json({ message: "Cloud Balance API is running!" });
