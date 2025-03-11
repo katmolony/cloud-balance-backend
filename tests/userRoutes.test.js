@@ -20,9 +20,9 @@ describe("User API Routes", () => {
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
             `);
-            console.log("✅ Users table is ready for tests.");
+            console.log("Users table is ready for tests.");
         } catch (error) {
-            console.error("❌ Failed to create 'users' table", error);
+            console.error("Failed to create 'users' table", error);
             throw error;
         }
     });

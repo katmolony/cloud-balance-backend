@@ -34,5 +34,4 @@ if (require.main === module) {
   });
 }
 
-// ✅ Export `app` so Mocha can use it
 module.exports = app;

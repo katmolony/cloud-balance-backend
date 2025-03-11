@@ -26,9 +26,9 @@ describe("Database Integration Tests", () => {
             // Drop dependent tables first
             await pool.query("DROP TABLE IF EXISTS resources");
             await pool.query("DROP TABLE IF EXISTS users");
-            console.log("✅ Tables dropped successfully after tests.");
+            console.log("Tables dropped successfully after tests.");
         } catch (error) {
-            console.error("❌ Failed to drop tables after tests.", error);
+            console.error("Failed to drop tables after tests.", error);
         }
     });
 });
