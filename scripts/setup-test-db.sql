@@ -93,3 +93,21 @@ DO $$
 BEGIN
     RAISE NOTICE 'Users table created successfully!';
 END $$;
+
+-- Drop alerts table first if it exists
+DROP TABLE IF EXISTS alerts;
+
+-- Create the alerts table
+CREATE TABLE alerts (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    type VARCHAR(50) NOT NULL CHECK (type IN ('cost', 'security')),
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+DO $$
+BEGIN
+    RAISE NOTICE 'Alerts table created successfully!';
+END $$;

@@ -12,7 +12,7 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
 
-// Routes
+// Register User Routes
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/users", userRoutes);
 
@@ -20,6 +20,11 @@ const resourceRoutes = require("./routes/resourceRoutes");
 
 // Register Resource Routes
 app.use("/api/resources", resourceRoutes);
+
+const alertRoutes = require("./routes/alertRoutes");
+
+// Register Alerts Routes
+app.use("/api/alerts", alertRoutes);
 
 // Health Check Route
 app.get("/", (req, res) => {
