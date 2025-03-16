@@ -12,18 +12,18 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
 
-// Register User Routes
+// User Routes
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/users", userRoutes);
 
 const resourceRoutes = require("./routes/resourceRoutes");
 
-// Register Resource Routes
+// Resource Routes
 app.use("/api/resources", resourceRoutes);
 
 const alertRoutes = require("./routes/alertRoutes");
 
-// Register Alerts Routes
+// Alerts Routes
 app.use("/api/alerts", alertRoutes);
 
 // Health Check Route
@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Cloud Balance API is running!" });
 });
 
-// Only start the server if it's not in test mode
+// Start not in test mode
 if (require.main === module) {
   const PORT = process.env.PORT || 5001;
   app.listen(PORT, () => {
