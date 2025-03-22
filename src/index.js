@@ -9,14 +9,14 @@ const { Pool } = require("pg");
 const app = express();
 const basePath = process.env.BASE_PATH || "/";
 
-// PostgreSQL Connection Setup with Retry Mechanism
+const isProduction = process.env.NODE_ENV === "production";
+
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-      require: true // Ensures SSL is enforced
-    },
-  });
+  connectionString: process.env.DATABASE_URL,
+  ssl: isProduction ? { rejectUnauthorized: false } : false,
+});
+
+console.log("SSL Mode:", isProduction ? "ENABLED" : "DISABLED");
 
 console.log("DATABASE_URL:", process.env.DATABASE_URL);
 
