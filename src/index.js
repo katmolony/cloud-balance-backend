@@ -93,12 +93,15 @@ app.use(basePath, router);
 
 // Serverless handler for AWS Lambda
 const server = serverless.createServer(app);
-exports.handler = (event, context) => serverless.proxy(server, event, context);
 
-// Local Development (only runs if not in Lambda)
+module.exports = app; // ✅ Export app for testing
+module.exports.handler = (event, context) => serverless.proxy(server, event, context);
+
+// Local Development
 if (require.main === module) {
   const PORT = process.env.PORT || 5001;
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 }
+
