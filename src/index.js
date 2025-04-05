@@ -42,6 +42,40 @@ const initializeDatabase = async () => {
         );
       `);
       await pool.query(`
+        CREATE TABLE IF NOT EXISTS iam_roles (
+          id SERIAL PRIMARY KEY,
+          user_id INT NOT NULL,
+          role_arn TEXT NOT NULL,
+          external_id TEXT,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (user_id) REFERENCES users(id)
+        );
+      `);
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS aws_costs (
+          id SERIAL PRIMARY KEY,
+          user_id INT NOT NULL,
+          service_name TEXT NOT NULL,
+          cost NUMERIC(12, 2) NOT NULL,
+          currency TEXT DEFAULT 'USD',
+          period_start DATE NOT NULL,
+          period_end DATE NOT NULL,
+          last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );      
+    `);
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS aws_resources (
+          id SERIAL PRIMARY KEY,
+          user_id INT NOT NULL,
+          arn TEXT NOT NULL,
+          resource_type TEXT,
+          tags JSONB,
+          last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );       
+    `);
+      await pool.query(`
         CREATE TABLE IF NOT EXISTS resources (
           id SERIAL PRIMARY KEY,
           user_id INT NOT NULL,
@@ -79,10 +113,17 @@ initializeDatabase();
 const router = express.Router();
 const userRoutes = require("./routes/userRoutes");
 router.use("/api/users", userRoutes);
+const iamRoleRoutes = require("./routes/iamRoleRoutes");
+router.use("/api/iam-roles", iamRoleRoutes);
 const resourceRoutes = require("./routes/resourceRoutes");
 router.use("/api/resources", resourceRoutes);
 const alertRoutes = require("./routes/alertRoutes");
 router.use("/api/alerts", alertRoutes);
+const awsDataRoutes = require("./routes/awsDataRoutes");
+router.use("/api/aws", awsDataRoutes);
+const awsFetchRoutes = require("./routes/awsFetchRoutes");
+router.use("/api/aws", awsFetchRoutes); //must be below aws routes
+
 
 // Health Check Route
 router.get("/", (req, res) => {

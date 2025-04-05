@@ -31,12 +31,12 @@ describe("Database Integration Tests", () => {
         expect(result.rows.length).to.be.greaterThan(0);
     });
 
-    after(async () => {
-        try {
-            await pool.query("DROP TABLE IF EXISTS users");
-            console.log("Users table dropped after integration tests.");
-        } catch (error) {
-            console.error("Failed to drop users table after tests.", error);
-        }
-    });
+    // after(async () => {
+    //     try {
+    //         await pool.query("DROP TABLE IF EXISTS users");
+    //         console.log("Users table dropped after integration tests.");
+    //     } catch (error) {
+    //         console.error("Failed to drop users table after tests.", error);
+    //     }
+    // });
 });

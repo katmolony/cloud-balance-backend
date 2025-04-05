@@ -4,6 +4,9 @@ BEGIN
     RAISE NOTICE 'Starting test database setup...';
 END $$;
 
+-- Drop iam_roles table first (due to foreign key dependency)
+DROP TABLE IF EXISTS iam_roles;
+
 -- Drop resources table first (due to foreign key dependency)
 DROP TABLE IF EXISTS resources;
 
@@ -22,6 +25,53 @@ CREATE TABLE users (
 DO $$
 BEGIN
     RAISE NOTICE 'Users table created successfully!';
+END $$;
+
+CREATE TABLE IF NOT EXISTS iam_roles (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
+  role_arn TEXT NOT NULL,
+  external_id TEXT, -- optional for secure cross-account role assumption
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+DO $$
+BEGIN
+    RAISE NOTICE 'IAM Roles table created successfully!';
+END $$;
+
+CREATE TABLE IF NOT EXISTS aws_costs (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
+  service_name TEXT NOT NULL,
+  cost NUMERIC(12, 2) NOT NULL,
+  currency TEXT DEFAULT 'USD',
+  period_start DATE NOT NULL,
+  period_end DATE NOT NULL,
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+
+DO $$
+BEGIN
+    RAISE NOTICE 'AWS Costs table created successfully!';
+END $$;
+
+CREATE TABLE IF NOT EXISTS aws_resources (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
+  arn TEXT NOT NULL,
+  resource_type TEXT,
+  tags JSONB,
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+DO $$
+BEGIN
+    RAISE NOTICE 'AWS Resources table created successfully!';
 END $$;
 
 -- Create the resources table with a foreign key to users

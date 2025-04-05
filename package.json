@@ -6,13 +6,15 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "setup-test-db": "psql -h localhost -U testuser -d cloud_balance_test -f scripts/setup-test-db.sql 2>&1 | tee logs/setup-test-db.log",
-    "test": "mocha tests/**/*.test.js --timeout 10000 --file tests/hooks/global-teardown.js"
+    "test": "mocha tests/**/*.test.js --timeout 10000 --file tests/hooks/global-teardown.js",
+    "test:env": "dotenv -e .env.test -- mocha tests/**/*.test.js --timeout 10000 --file tests/hooks/global-teardown.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@aws-sdk/client-lambda": "^3.775.0",
     "aws-serverless-express": "^3.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -24,6 +26,7 @@
   "devDependencies": {
     "chai": "^4.3.8",
     "chai-http": "^4.3.0",
+    "dotenv-cli": "^8.0.0",
     "mocha": "^11.1.0",
     "nodemon": "^3.1.9",
     "sinon": "^19.0.2",
