@@ -137,7 +137,7 @@ app.use(basePath, router);
 // Serverless handler for AWS Lambda
 const server = serverless.createServer(app);
 
-module.exports = app; // ✅ Export app for testing
+module.exports = app;
 module.exports.handler = (event, context) => serverless.proxy(server, event, context);
 
 // Local Development
