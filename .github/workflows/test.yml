@@ -22,7 +22,7 @@ jobs:
           --health-retries 5
 
     env:
-      NODE_ENV: development
+      NODE_ENV: test
       TEST_DB_USER: testuser
       TEST_DB_PASSWORD: testpassword
       TEST_DB_HOST: localhost
@@ -44,6 +44,7 @@ jobs:
 
       - name: Wait for Postgres
         run: |
+          sleep 5
           until pg_isready -h localhost -p 5432 -U testuser; do
             echo "Waiting for Postgres..."
             sleep 2

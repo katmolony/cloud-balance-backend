@@ -108,7 +108,9 @@ const initializeDatabase = async () => {
   }
 };
 
-initializeDatabase();
+if (process.env.NODE_ENV !== "test") {
+  initializeDatabase();
+}
 
 // Attach routes under the base path
 const router = express.Router();
