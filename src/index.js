@@ -32,12 +32,13 @@ const initializeDatabase = async () => {
   while (retries) {
     try {
       await pool.query("SELECT 1");
-      console.log("✅ Database connected successfully");
+      console.log("Database connected successfully");
       await pool.query(`
         CREATE TABLE IF NOT EXISTS users (
           id SERIAL PRIMARY KEY,
           name VARCHAR(255) NOT NULL,
           email VARCHAR(255) UNIQUE NOT NULL,
+          updated_at TIMESTAMP,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
       `);
@@ -96,10 +97,10 @@ const initializeDatabase = async () => {
           FOREIGN KEY (user_id) REFERENCES users(id)
         );
       `);
-      console.log("✅ Tables are initialized or already exist!");
+      console.log("Tables are initialized or already exist!");
       break;
     } catch (error) {
-      console.error("❌ Error initializing database:", error);
+      console.error("Error initializing database:", error);
       retries -= 1;
       console.log(`Retries left: ${retries}`);
       await new Promise(res => setTimeout(res, 5000));

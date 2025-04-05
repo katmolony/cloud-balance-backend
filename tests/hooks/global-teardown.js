@@ -10,8 +10,8 @@ module.exports = async () => {
       DROP TABLE IF EXISTS users CASCADE;
     `);
 
-    console.log("✅ All tables dropped after all tests.");
+    console.log("All tables dropped after all tests.");
   } catch (error) {
-    console.error("❌ Failed to drop tables after all tests.", error);
+    console.error("Failed to drop tables after all tests.", error);
   }
 };
