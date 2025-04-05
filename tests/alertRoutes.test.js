@@ -8,7 +8,6 @@ const { expect } = chai;
 
 describe("Alerts API Routes", () => {
     before(async () => {
-        await pool.query("DROP TABLE IF EXISTS alerts CASCADE");
      // Recreate users table if it doesn't exist
         await pool.query(`
                 CREATE TABLE IF NOT EXISTS users (

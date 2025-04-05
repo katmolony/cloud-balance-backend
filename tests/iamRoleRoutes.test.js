@@ -10,7 +10,26 @@ describe("IAM Role API", () => {
     let userId;
 
     before(async () => {
-        // Create test user
+        await pool.query("DROP TABLE IF EXISTS iam_roles, users CASCADE");
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        `);
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS iam_roles (
+                id SERIAL PRIMARY KEY,
+                user_id INT NOT NULL,
+                role_arn TEXT NOT NULL,
+                external_id TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id)
+            );
+        `);
+
         const res = await pool.query(`INSERT INTO users (name, email) VALUES ('Test User', 'iamtest@example.com') RETURNING id`);
         userId = res.rows[0].id;
     });
